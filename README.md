@@ -1,4 +1,4 @@
-# bromine lite
+## bromine lite
 ###### a game site using one file
 
 ![MIT License](https://img.shields.io/badge/license-MIT-blue)
