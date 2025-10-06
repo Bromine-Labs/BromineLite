@@ -1,41 +1,71 @@
 ---
 import Layout from "@/Layout.astro";
-import {Icon} from "astro-icon/components"
+
+import Tabs from "@/components/ui/Tabs.astro";
+import Omnibar from "@/components/ui/Omnibar.astro";
+import Frame from "@/components/utils/Frame.astro";
 ---
-<Layout title="gmes - bromine" desc="bromine's gmes page">
-  <script
-		src="@/utils/gmes.ts"
-		></script>
 
-
-<div class="w-full sticky top-0 z-50 backdrop-blur backdrop-opacity-70 shadow-md flex justify-center py-3">
-	<input 
-		id="search" 
-		type="text" 
-		placeholder="Search gmes..." 
-		class="bg-surface text-text focus:outline-none shadow rounded-md w-1/2 px-4 py-2"
-	>
-</div>
-
-
-	<section id="gmeContainer"></section>
-<script async="async" data-cfasync="false" src="//learningbuildingroughly.com/b113e1888ef757be96cdcc722c0f31c8/invoke.js"></script>
-<div id="container-b113e1888ef757be96cdcc722c0f31c8"></div>
-	<div id="gmePageContainer" class="bg-surface/90 hidden fixed inset-0 z-[999] flex flex-col items-center justify-start p-5 md:p-10 box-border">
-			<div class="flex justify-between items-center w-full  mb-4">
-
-            <button id="backBtn" class="p-3 bg-surface rounded-lg transition-all duration-200 outline-2 outline-offset-2 outline-muted flex items-center space-x-2">
-							<Icon name="ph:arrow-left" class="size-5"/>
-                <span>Back</span>
-						</button>
-
-						<button id="fullscreenBtn" class="p-3 bg-surface rounded-lg transition-all duration-200 outline-2 outline-offset-2 outline-muted flex items-center space-x-2" title="Fullscreen">
-							<Icon name="ph:arrows-out" class="size-5"/>
-                <span>Fullscreen</span>
-            </button>
-				</div>
-
-        <h2 id="gmePageTitle" class="text-3xl font-bold mt-4 mb-4 text-center"></h2>
-        <iframe id="gmePageFrame" class="bg-surface/95 w-full flex-grow border-none rounded-xl shadow-lg outline-2 outline-offset-2 outline-muted" allowfullscreen></iframe>
-    </div>
+<Layout title="bromine">
+	<Tabs />
+  <Omnibar />
+  <Frame/>
 </Layout>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NQ3WX8KNQW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NQ3WX8KNQW');
+</script>
+<script>
+
+  (()=>{ if(window.top.location.origin == 'null')
+    return;
+  if (localStorage.getItem("ab") === "true") {
+    const popup = open("about:blank", "_blank");
+    if (!popup || popup.closed) {
+      alert(
+        "Please allow popups for about bnalk to work.",
+      );
+    } else {
+      const doc = popup.document;
+      const iframe = doc.createElement("iframe");
+      const style = iframe.style;
+      const link = doc.createElement("link");
+
+      const name = "My Drive - Google Drive";
+      const icon = "https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png";
+
+      doc.title = name;
+      link.rel = "icon";
+      link.href = icon;
+
+      iframe.src = location.href;
+      style.position = "fixed";
+      style.top = style.bottom = style.left = style.right = 0;
+      style.border = style.outline = "none";
+      style.width = style.height = "100%";
+
+      doc.head.appendChild(link);
+      doc.body.appendChild(iframe);
+
+      const pLink = "https://classroom.google.com/h"
+      location.replace(pLink);
+
+      const script = doc.createElement("script");
+      script.textContent = `
+      window.onbeforeunload = function (event) {
+        const confirmationMessage = 'Leave Site?';
+        (event || window.event).returnValue = confirmationMessage;
+        return confirmationMessage;
+      };
+    `;
+      doc.head.appendChild(script);
+    }
+
+  }})();
+</script>

@@ -1,0 +1,133 @@
+---
+import "@/styles.css";
+import Suggestions from "@/components/utils/Suggestions.astro";
+---
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+      <meta
+         name="viewport"
+         content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+         />
+      <link rel="icon" href="favicon.svg" sizes="any" type="image/svg+xml">
+   </head>
+   <body class="text-text bg-base flex overflow-none">
+      <main id="main" class="flex flex-col flex-grow h-screen justify-center items-center">
+         <h1 class="text-4xl font-bold mb-4">New Tab</h1>
+         <form id="form" class="flex justify-center w-full">
+            <input
+               autofocus
+               spellcheck="false"
+               autocomplete="off"
+               id="address"
+               type="text"
+               class="text-text border border-iris:border-iris rounded-lg p-2 mb-4 w-full max-w-md"
+               id="input"
+               required
+               placeholder="Search the world wide web"
+               >
+				 </form>
+<script async="async" data-cfasync="false" src="//learningbuildingroughly.com/b113e1888ef757be96cdcc722c0f31c8/invoke.js"></script>
+<div id="container-b113e1888ef757be96cdcc722c0f31c8"></div>
+
+         <script>
+            import {
+               setTransport,
+               setWisp,
+               makeURL,
+               currentFrame,
+               getProxied,
+             } from "@/utils/lethal"
+            
+            
+             let wisp = localStorage.getItem("wísp-server") || "wss://anura.pro/" as string
+             let transport = localStorage.getItem("prσxy-transport") as string
+            
+             setWisp(wisp)
+            
+             if (transport) setTransport(transport as Transport)
+             else if (navigator.userAgent.indexOf("Firefox") > 0) setTransport("libcurl")
+             else setTransport("epoxy")
+             let search =
+               localStorage.getItem("search-engine") ||
+							"https://duckduckgo.com/search?q=%s" as string
+            
+                       const form = document.getElementById("form") as HTMLFormElement
+             const input = document.getElementById("address") as HTMLInputElement
+            
+             form?.addEventListener("submit", async (e) => {
+               e.preventDefault()
+            
+               const proxiedUrl = await getProxied(makeURL(input?.value, search))
+            
+               if (localStorage.getItem("stealth-mode"))
+                 location.replace(proxiedUrl)
+                else
+                 location.href = proxiedUrl
+            
+             })
+            
+            
+             window.addEventListener("search-engine-changed", () => {
+               search = localStorage.getItem("search-engine") as string
+             })
+            
+            
+             window.addEventListener("wísp-server-changed", () => {
+               wisp = localStorage.getItem("wísp-server") as string
+               setWisp(localStorage.getItem("wísp-server") as string)
+             })
+            
+             window.addEventListener("prσxy-transport-changed", () => {
+               transport = localStorage.getItem("prσxy-transport") as Transport
+               setTransport(localStorage.getItem("prσxy-transport") as Transport)
+             })
+                   
+         </script>
+      </main>
+      <script>
+         const applyWallpaper = () => {
+           const enabled = localStorage.getItem("wallpaper-enabled") === "true";
+           const url = localStorage.getItem("wallpaper-url");
+         
+           const body = document.querySelector("body");
+         
+           if (enabled && url) {
+             body.style.backgroundImage = `url('${url}')`;
+             body.style.backgroundSize = "cover";
+             body.style.backgroundPosition = "center";
+             body.style.backgroundRepeat = "no-repeat";
+           } else {
+             body.style.backgroundImage = "none";
+           }
+         };
+         
+         document.body.dataset.theme = localStorage.getItem("theme");
+         applyWallpaper();
+         
+         window.addEventListener('message', function(event) {
+           const msg = event.data;
+           if (!msg || !msg.type) return;
+         
+           switch(msg.type) {
+             case "theme-changed":
+               document.body.dataset.theme = localStorage.getItem("theme");
+               break;
+         
+             case "wallpaper-enabled-changed":
+               applyWallpaper();
+               break;
+         
+             case "wallpaper-url-changed":
+               applyWallpaper();
+               break;
+         
+             default:
+         document.dispatchEvent(new CustomEvent(msg.type));
+               console.log("Unknown message type:", msg.type);
+           }
+         });
+      </script>
+   </body>
+</html>

@@ -1,6 +1,8 @@
 ---
 import "@/styles.css";
 import Footer from "@/components/ui/Footer.astro";
+
+import Lethal from "@/components/utils/Lethal.astro";
 export interface Props {
 	title: string;
 	desc: string;
@@ -42,7 +44,74 @@ const { title = "bromine", desc = "Bromine is the ultimate spot where elements m
 
   <meta name="msapplication-TileColor" content="#26233a">
 
-    </head>
+    <script is:inline type="text/partytown" async defer src="https://cloud.umami.is/script.js" data-website-id="2258facf-d129-4374-9160-d24eb3a3740a"></script>
+    <Lethal />
+    <link rel="preconnect" href="https://images.placeholders.dev">
+
+
+    <title>{title}</title>
+
+
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{
+                "@type": "Question",
+                "name": "What is Bromine?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Bromine is a minimal and clean secure web pr0xy service with support for many sites. byp@ss filters and enjoy a safer pr1vate browsing experience or unbl0ck websites on devices such as Chromebooks and at places like school or work without any setup process."
+                }
+          },
+{
+                "@type": "Question",
+                "name": "Can i play g2mes on it?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                "text": "Bromine has most sites general. As long as Scramjet or Ultraviolet supports it, Bromine supports it."
+                }
+          }
+          ]
+        }
+</script>
+<script >
+import {
+    currentFrame
+} from "./utils/lethal";
+
+const originalSetItem = localStorage.setItem;
+localStorage.setItem = function(key) {
+    originalSetItem.apply(this, arguments);
+    window.dispatchEvent(new Event(`${key}-changed`));
+
+
+
+    window.parent.postMessage({
+        type: `${key}-changed`
+    }, "*");
+    currentFrame.contentWindow.postMessage({
+        type: `${key}-changed`
+    }, "*");
+};
+window.addEventListener("theme-changed", () => {
+    document.body.dataset.theme = localStorage.getItem("theme");
+});
+
+const cloak = () => {
+    const cloakValue = localStorage.getItem("cloak");
+    if (!cloakValue || cloakValue === 'none') return;
+    const cloakk = cloakValue.split("|");
+    document.title = cloakk[0];
+    const icon = document.querySelector("link[rel=icon]");
+    if (icon) icon.href = cloakk[1];
+};
+
+window.addEventListener("cloak-changed", cloak);
+document.body.dataset.theme = localStorage.getItem("theme");
+cloak();</script>
+  </head>
   <body class="text-text bg-base flex">
     <a
       href="#main"

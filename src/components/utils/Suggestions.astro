@@ -1,0 +1,204 @@
+---
+
+---
+
+<div
+	id="suggs-container"
+	class="absolute w-full bg-surface rounded-md shadow-lg z-30 hidden"
+	style="top: 100%; left: 0;"
+>
+		<ul id="suggs-list" class="divide-y divide-muted"></ul>
+</div>
+<script>
+	import { currentTab, makeURL, getProxied, currentFrame } from "@/utils/lethal.ts";
+	const addressInput = document.getElementById("address");
+	const suggsContainer = document.getElementById("suggs-container");
+	const suggsList = document.getElementById("suggs-list");
+	const form = document.getElementById("form");
+
+	let currentHighlightedIndex = -1;
+
+	const fetchSuggs = (query) => {
+		return new Promise(async (resolve) => {
+			if (!query) {
+				resolve([])
+				return;
+			}
+
+			try {
+				const response = await fetch(await getProxied(`https://duckduckgo.com/ac/?q=${encodeURIComponent(query)}`));
+				const data = await response.json();
+				const suggestions = data.map(item => item.phrase);
+				resolve(suggestions);
+			} catch (err) {
+				resolve([]);
+			}
+		});
+	};
+
+
+	const renderSuggs = (suggs) => {
+		const query = addressInput.value.trim();
+		suggsList.innerHTML = "";
+
+		if (query.length >= 2) {
+			// Prepend current input as the first suggestion
+			suggs = [query, ...suggs];
+		}
+
+		if (suggs.length === 0) {
+			suggsContainer.classList.add("hidden");
+			currentHighlightedIndex = -1;
+			return;
+		}
+
+		suggsList.innerHTML = suggs
+			.map(
+				(item, index) => `
+			<li class="p-2 cursor-pointer hover:bg-highlight-low text-text" data-index="${index}">
+				${item}
+			</li>
+		`
+			)
+			.join("");
+
+		const items = [...suggsList.children];
+
+		// Always highlight the first suggestion
+		currentHighlightedIndex = 0;
+		items[currentHighlightedIndex].classList.add("bg-highlight-low");
+		addressInput.value = items[currentHighlightedIndex].textContent.trim();
+
+		items.forEach((li) => {
+			li.addEventListener("click", (e) => {
+				e.preventDefault();
+				addressInput.value = li.textContent.trim();
+				suggsContainer.classList.add("hidden");
+				form.dispatchEvent(new Event("submit"));
+				addressInput.blur();
+			});
+		});
+
+		suggsContainer.classList.remove("hidden");
+	};
+
+
+	const highlightSugg = (index) => {
+		const items = [...suggsList.children];
+		if (items.length === 0) return;
+
+		if (currentHighlightedIndex > -1 && items[currentHighlightedIndex]) {
+			items[currentHighlightedIndex].classList.remove("bg-highlight-low");
+		}
+
+		if (index < 0) index = items.length - 1;
+		if (index >= items.length) index = 0;
+
+		items[index].classList.add("bg-highlight-low");
+		currentHighlightedIndex = index;
+
+		addressInput.value = items[currentHighlightedIndex].textContent.trim();
+	};
+
+	addressInput.addEventListener("input", async () => {
+		const query = addressInput.value.trim();
+
+		addressInput.dataset.originalValue =
+			addressInput.dataset.originalValue || addressInput.value;
+
+		if (query.length < 2) {
+			suggsList.innerHTML = "";
+			suggsContainer.classList.add("hidden");
+			return;
+		}
+
+		const suggs = await fetchSuggs(query);
+		renderSuggs(suggs);
+	});
+
+	addressInput.addEventListener("focus", async () => {
+		const query = addressInput.value.trim();
+		if (query.length >= 2 && suggsList.children.length > 0) {
+			suggsContainer.classList.remove("hidden");
+		} else if (query.length >= 2) {
+			const suggs = await fetchSuggs(query);
+			renderSuggs(suggs);
+		}
+	});
+
+	addressInput.addEventListener("blur", () => {
+		setTimeout(() => {
+			suggsContainer.classList.add("hidden");
+			delete addressInput.dataset.originalValue;
+			currentHighlightedIndex = -1;
+		}, 100);
+	});
+
+	addressInput.addEventListener("keydown", (e) => {
+		const items = [...suggsList.children];
+		if (
+			items.length === 0 ||
+			suggsContainer.classList.contains("hidden")
+		) {
+			return;
+		}
+
+		const keyActions = {
+			ArrowDown: () => {
+				e.preventDefault();
+				let newIndex = currentHighlightedIndex + 1;
+				if (newIndex >= items.length) {
+					newIndex = -1;
+				}
+				highlightSugg(newIndex);
+			},
+			ArrowUp: () => {
+				e.preventDefault();
+				let newIndex = currentHighlightedIndex - 1;
+				if (newIndex < -1) {
+					newIndex = items.length - 1;
+				}
+				highlightSugg(newIndex);
+			},
+			Enter: async () => {
+				if (currentHighlightedIndex > -1) {
+					e.preventDefault();
+					let search =
+						localStorage.getItem("search-engine") ||
+						"https://duckduckgo.com/search?q=%s"
+
+
+					const urlToLoad = makeURL(addressInput.value, search)
+					const proxiedUrl = await getProxied(urlToLoad)
+
+					let currentFrame = document.getElementById(`frame-${currentTab}`) as HTMLIFrameElement;
+
+					if (localStorage.getItem("stealth-mode")) {
+						currentFrame?.contentWindow?.location.replace(proxiedUrl)
+					} else {
+						currentFrame.src = proxiedUrl
+					}
+					if(currentFrame === document.getElementById(`frame-${currentTab}`)){
+						addressInput.value = urlToLoad
+						currentFrame.focus()
+					}
+				}
+			},
+			Escape: () => {
+				e.preventDefault();
+				suggsContainer.classList.add("hidden");
+				addressInput.value = addressInput.dataset.originalValue || "";
+				delete addressInput.dataset.originalValue;
+				currentHighlightedIndex = -1;
+				addressInput.blur();
+			},
+		};
+
+		const action = keyActions[e.key];
+		if (action) {
+			action();
+		}
+	});
+
+
+</script>

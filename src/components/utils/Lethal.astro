@@ -1,0 +1,67 @@
+---
+
+---
+
+<script>
+  // --- LETHAL IMPORTS ---
+  import {
+    setTransport,
+    setWisp,
+    makeURL,
+    getProxied,
+    setFrames,
+    addressInput,
+    currentTab,
+    Tab
+  } from "@/utils/lethal"
+
+  // --- INIT ---
+  const form = document.getElementById("form")
+  let search =
+    localStorage.getItem("search-engine") ||
+    "https://duckduckgo.com/search?q=%s"
+
+
+  let wisp = localStorage.getItem("wísp-server") || "wss://anura.pro/"
+  let transport = localStorage.getItem("prσxy-transport")
+
+  setWisp(wisp)
+
+  if (transport) setTransport(transport as Transport)
+  else if (navigator.userAgent.indexOf("Firefox") > 0) setTransport("libcurl")
+  else setTransport("epoxy")
+
+  // --- EVENTS ---
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault()
+
+    const urlToLoad = makeURL(addressInput.value, search)
+    const proxiedUrl = await getProxied(urlToLoad)
+
+    let currentFrame = document.getElementById(`frame-${currentTab}`) as HTMLIFrameElement;
+
+    if (localStorage.getItem("stealth-mode")) {
+      currentFrame?.contentWindow?.location.replace(proxiedUrl)
+    } else {
+      currentFrame.src = proxiedUrl
+    }
+    if(currentFrame === document.getElementById(`frame-${currentTab}`))
+      addressInput.value = urlToLoad
+  })
+
+  window.addEventListener("search-engine-changed", () => {
+    search = localStorage.getItem("search-engine") as string
+  })
+
+  window.addEventListener("wísp-server-changed", () => {
+    wisp = localStorage.getItem("wísp-server") as string
+    setWisp(localStorage.getItem("wísp-server") as string)
+  })
+
+  window.addEventListener("prσxy-transport-changed", () => {
+    transport = localStorage.getItem("prσxy-transport") as Transport
+    setTransport(localStorage.getItem("prσxy-transport") as Transport)
+  })
+
+	setFrames(document.getElementById("frames") as HTMLElement);
+</script>

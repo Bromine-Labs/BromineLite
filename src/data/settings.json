@@ -1,0 +1,211 @@
+{
+	"sections": [
+		{
+			"title": "General",
+			"settings": [
+				{
+					"id": "theme",
+					"label": "Theme",
+					"type": "select",
+					"defaultValue": "main",
+					"description": "It's simple. Make this website look different",
+					"options": [
+						{
+							"label": "Rosé Pine",
+							"disabled": true
+						},
+						{
+							"value": "main",
+							"label": "Default"
+						},
+						{
+							"value": "moon",
+							"label": "Moon"
+						},
+						{
+							"value": "dawn",
+							"label": "Dawn"
+						},
+						{
+							"label": "Catppuccin",
+							"disabled": true
+						},
+						{
+							"value": "macchiato",
+							"label": "Macchiato"
+						},
+						{
+							"value": "mocha",
+							"label": "Mocha"
+						},
+						{
+							"value": "frappe",
+							"label": "Frappe"
+						},
+						{
+							"value": "latte",
+							"label": "Latte"
+						}
+					]
+				},
+				{
+					"id": "search-engine",
+					"label": "Default Search Engine",
+					"type": "select",
+					"defaultValue": "https://duckduckgo.com/?q=%s&ia=web",
+					"description": "choose the search engine used when you search from the address bar.",
+					"options": [
+						{
+							"value": "https://search.brave.com/search?q=%s",
+							"label": "Brave"
+						},
+						{
+							"value": "https://www.bing.com/search?q=%s",
+							"label": "Bing"
+						},
+						{
+							"value": "https://duckduckgo.com/?q=%s&ia=web",
+							"label": "Duckduckgo"
+						},
+						{
+							"value": "https://search.yahoo.com/search?p=%s",
+							"label": "Yahoo"
+						},
+						{
+							"value": "https://searx.si/search?q=%s",
+							"label": "SearXNG"
+						},
+						{
+							"value": "https://www.qwant.com/?q=%s",
+							"label": "Qwant"
+						},
+						{
+							"value": "https://www.ecosia.org/search?q=%s",
+							"label": "Ecosia"
+						},
+						{
+							"value": "https://yandex.com/search?text=%s",
+							"label": "Yandex"
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": "Clσaking",
+			"settings": [
+				{
+					"id": "stealth-mode",
+					"label": "Stealth Mσde",
+					"type": "toggle",
+					"defaultValue": "on",
+					"description": "This will hide all your activity from even browser back/forward arrows!"
+				},
+				{
+					"id": "ab",
+					"label": "About Blank",
+					"type": "toggle",
+					"defaultValue": "false",
+					"description": "About blanks the prσxy. Hides the prσxy from history but not back/forward buttons."
+				},
+				{
+					"id": "cloak",
+					"label": "Clσaking",
+					"type": "select",
+					"defaultValue": "bromine|favicon.svg",
+					"description": "Disguises the tab with a different title and favicon to hide your activity.",
+					"options": [
+						{
+							"value": "bromine|favicon.svg",
+							"label": "Default/None"
+						},
+						{
+							"value": "Google|https://www.google.com/favicon.ico",
+							"label": "Google"
+						},
+						{
+							"value": "ABC News - Breaking News, Latest News and Videos|https://abcnews.go.com/favicon.ico",
+							"label": "ABC News"
+						},
+						{
+							"value": "Home|https://ssl.gstatic.com/classroom/favicon.png",
+							"label": "Google Classroom"
+						},
+						{
+							"value": "PowerSchool|https://www.powerschool.com/favicon.ico",
+							"label": "PowerSchool"
+						},
+						{
+							"value": "Wikipedia|https://www.wikipedia.org/static/favicon/wikipedia.ico",
+							"label": "Wikipedia"
+						},
+						{
+							"value": "Dashboard|https://canvas-student.net/images/uploads/2022-10-19/favicon-cdxtk.ico",
+							"label": "Canvas"
+						},
+						{
+							"value": "IXL|https://www.ixl.com/favicon.ico",
+							"label": "IXL"
+						},
+						{
+							"value": "The New York Times - Breaking News, US News, World News and Video|https://static01.nyt.com/favicon.ico",
+							"label": "NY Times"
+						}
+					]
+				}
+			]
+		},
+		{
+			"title": "Prσxy",
+			"settings": [
+				{
+					"id": "prσxy-transport",
+					"label": "Prσxy Transport",
+					"type": "select",
+					"defaultValue": "epoxy",
+					"description": "Select the transport layer for prσxy communication. Epσxy is best for chrome and libcurl with firefox, and bare is deprecated.",
+					"options": [
+						{
+							"value": "bare",
+							"label": "Bare"
+						},
+						{
+							"value": "epoxy",
+							"label": "Epσxy"
+						},
+						{
+							"value": "libcurl",
+							"label": "Libcúrl"
+						}
+					]
+				},
+				{
+					"id": "wísp-server",
+					"label": "Wisp/Bare Server",
+					"type": "text",
+					"defaultValue": "",
+					"placeholder": "wss://wísp.pro/",
+					"description": "The transport server used. This requires a '/' at the end"
+				}
+			]
+		},
+		{
+			"title": "New Tab",
+			"settings": [
+				{
+					"id": "wallpaper-enabled",
+					"label": "Enable Wallpaper",
+					"type": "toggle",
+					"defaultValue": "false"
+				},
+				{
+					"id": "wallpaper-url",
+					"label": "Wallpaper URL",
+					"defaultValue": "",
+					"type": "text",
+					"placeholder": "wallpaper url..."
+				}
+			]
+		}
+	]
+}

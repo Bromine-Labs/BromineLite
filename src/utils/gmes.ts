@@ -1,9 +1,4 @@
-  try {
-    const res = await fetch('https://raw.githubusercontent.com/bromine-labs/bromine/main/src/assets/gmes.json');
-    window.gmesData = await res.json();
-  } catch (err) {
-    console.error("Failed to fetch JSON:", err);
-  }
+import gmesData from "@/assets/gmes.json";
 
 (() => {
 
