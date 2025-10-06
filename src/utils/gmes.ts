@@ -107,7 +107,7 @@ window.opengme = async (alt, title, frameGme) => {
     container.style.display = "flex";
     document.body.style.overflow = "hidden";
 
-    if (frameGme) {
+    if (frameGme == true) {
         // Directly load raw.githack URL
         frame.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${alt}`;
     } else {
