@@ -107,34 +107,7 @@ window.opengme = async (alt, title, frameGme) => {
     container.style.display = "flex";
     document.body.style.overflow = "hidden";
 
-    if (frameGme == true) {
-        // Directly load raw.githack URL
         frame.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${alt}`;
-    } else {
-			frame.onload = async () => {
-				if (frame.dataset.loaded) return;
-				const doc = frame.contentDocument;
-
-				const html = await fetch(`https://cdn.jsdelivr.net/gh/bromine-labs/asseting-bromine@main/${alt}`)
-					.then(r => r.text());
-
-				doc.open();
-				doc.write(html);
-				doc.close();
-
-				// Re-run scripts
-				doc.querySelectorAll('script').forEach(s => {
-					const script = doc.createElement('script');
-					script.src = s.src || '';
-					if (!s.src) script.textContent = s.textContent;
-					s.replaceWith(script);
-				});
-
-				frame.dataset.loaded = true;
-			};
-
-			frame.src = "/asdf.html";
-    }
 };
 
 
