@@ -1,11 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google</title>
+  <title>Bromine Lite</title>
   <link rel="icon" href="https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico">
 
   <!-- Dependencies -->
@@ -16,7 +14,6 @@
   <style type="text/tailwindcss">
     @theme {
       --font-display: Helvetica, sans-serif;
-
       --color-base: #191724;
       --color-surface: #1f1d2e;
       --color-overlay: #26233a;
@@ -41,6 +38,7 @@
     h3 { @apply text-lg font-medium; }
     a  { @apply text-iris }
 
+    input { @apply text-text; }
     button { transition: transform 0.2s ease-in-out; }
   </style>
 </head>
@@ -55,12 +53,12 @@
         <i class="ph-bold ph-house"></i> Home
       </a>
       <a href="#gmes" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
-        <i class="ph-bold ph-gme-controller"></i> Gmes
+        <i class="ph-bold ph-game-controller"></i> Gmes
       </a>
     </div>
   </nav>
 
-  <!-- Home -->
+  <!-- Proxy -->
   <main id="home" class="page flex flex-col items-center justify-center text-center flex-grow p-8">
     <h1>Bromine Lite</h1>
     <p class="text-love mb-4 font-semibold">IMPORTANT: Low site support!</p>
@@ -69,29 +67,28 @@
       id="search_input_home"
       type="text"
       placeholder="Search the web..."
-      class="bg-surface px-4 py-2 rounded-md w-full max-w-md focus:outline-none shadow text-text"
+      class="bg-surface px-4 py-2 rounded-md w-full max-w-md focus:outline-none shadow"
     />
 
-		<!-- Dialog -->
-		<dialog open class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 rounded-md bg-overlay text-text">
-			<button 
-				onclick="this.closest('dialog').close()" 
-				class="absolute top-2 right-2 text-xl font-bold text-text hover:text-love"
-			>
-				<i class="ph-bold ph-x"></i>
-			</button>
+    <!-- Dialog -->
+    <dialog open class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 rounded-md bg-overlay text-text">
+      <button 
+        onclick="this.closest('dialog').close()" 
+        class="absolute top-2 right-2 text-xl font-bold text-text hover:text-love"
+      >
+        <i class="ph-bold ph-x"></i>
+      </button>
 
+      <h1 class="text-xl font-semibold mb-2">Bromine Lite</h1>
+      <p class="mb-4">Join our Discord community for updates and more!</p>
 
-			<h1 class="text-xl font-semibold mb-2">Bromine Lite</h1>
-			<p class="mb-4">Join our Discord community for updates and more!</p>
-
-			<form class="bg-surface flex justify-center" onsubmit="event.preventDefault(); join_dc();">
-				<button type="submit" class="w-full px-4 py-2 rounded-md bg-primary text-white font-semibold">
-					Join
-				</button>
-			</form>
-		</dialog>
-	</main>
+      <form class="bg-surface flex justify-center" onsubmit="event.preventDefault(); join_dc();">
+        <button type="submit" class="w-full px-4 py-2 rounded-md bg-primary text-white font-semibold">
+          Join
+        </button>
+      </form>
+    </dialog>
+  </main>
 
   <!-- Gmes -->
   <div id="gmes" class="page hidden flex flex-col flex-grow">
@@ -123,30 +120,19 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script defer src="https://cdn.jsdelivr.net/gh/bromine-labs/BromineLite@main/sandstone.js"></script>
   <script type="module">
-    (async () => {
-      try {
-        const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json");
-        gmes_data = await res.json();
-        render_gmes(games_data);
-      } catch (err) {
-        console.error("Could not load gmes JSON:", err);
-        gme_list.innerHTML = "<p class='text-love'>Failed to load games.</p>";
-      }
-    })();
-
     window.join_dc = () => {
       document.querySelector('dialog').close();
       open('https://discord.com/invite/78eCrKajqU', '_blank');
     }
 
     // -----------------------------
-    // Proxy
+    // Proxy search
     // -----------------------------
     const search_input_home = document.getElementById("search_input_home");
     const home_page = document.getElementById("home");
-    let main_frame;
     const original_home_content = home_page.innerHTML;
 
     sandstone.libcurl.set_websocket("wss://anura.pro");
@@ -158,7 +144,7 @@
 
       home_page.innerHTML = "";
 
-      main_frame = new sandstone.controller.ProxyFrame();
+      const main_frame = new sandstone.controller.ProxyFrame();
       main_frame.iframe.style.width = "100%";
       main_frame.iframe.style.height = "100vh";
       main_frame.iframe.style.border = "none";
@@ -178,10 +164,9 @@
     });
 
     // -----------------------------
-    // SPA thingy
+    // SPA routing for games
     // -----------------------------
     const pages = document.querySelectorAll(".page");
-
     const show_page_from_hash = () => {
       const hash = location.hash.substring(1) || "home";
       pages.forEach(page => page.classList.toggle("hidden", page.id !== hash));
@@ -190,23 +175,23 @@
     addEventListener("hashchange", show_page_from_hash);
 
     // -----------------------------
-    // Gmes
+    // Games logic
     // -----------------------------
-    const gme_list = document.getElementById("game_list");
-    const search_input_gmes = document.getElementById("search_input_games");
-    const gme_frame_container = document.getElementById("game_frame_container");
-    const gme_frame = document.getElementById("game_frame");
-    const gme_frame_title = document.getElementById("game_frame_title");
-    const close_gme_frame = document.getElementById("close_game_frame");
+    const gme_list = document.getElementById("gme_list");
+    const search_input_gmes = document.getElementById("search_input_gmes");
+    const gme_frame_container = document.getElementById("gme_frame_container");
+    const gme_frame = document.getElementById("gme_frame");
+    const gme_frame_title = document.getElementById("gme_frame_title");
+    const close_gme_frame = document.getElementById("close_gme_frame");
 
     let gmes_data = [];
 
     const render_gmes = (games) => {
       gme_list.innerHTML = "";
-      gmes.forEach(game => {
+      games.forEach(game => {
         const card = document.createElement("div");
         card.className = "bg-surface border border-overlay rounded-xl p-3 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer";
-        card.innerHTML = `<h3 class="mt-2 font-medium text-text truncate">${gme.title}</h3>`;
+        card.innerHTML = `<h3 class="mt-2 font-medium text-text truncate">${game.title}</h3>`;
         card.addEventListener("click", () => open_gme(game.file_name, game.title));
         gme_list.appendChild(card);
       });
@@ -230,6 +215,17 @@
       const filtered = gmes_data.filter(g => g.title.toLowerCase().includes(query));
       render_gmes(filtered);
     });
+
+    (async () => {
+      try {
+        const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json");
+        gmes_data = await res.json();
+        render_gmes(gmes_data);
+      } catch (err) {
+        console.error("Could not load gmes JSON:", err);
+        gme_list.innerHTML = "<p class='text-love'>Failed to load games.</p>";
+      }
+    })();
   </script>
 </body>
 </html>

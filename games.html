@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bromine Lite Games</title>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bromine Lite - Games</title>
+  <link rel="icon" href="https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico">
+
+  <!-- Dependencies -->
+  <script defer async src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+
+  <!-- Styling -->
+  <style type="text/tailwindcss">
+    @theme {
+      --font-display: Helvetica, sans-serif;
+      --color-base: #191724;
+      --color-surface: #1f1d2e;
+      --color-overlay: #26233a;
+      --color-muted: #6e6a86;
+      --color-text: #e0def4;
+      --color-love: #eb6f92;
+      --color-highlight-med: #403d52;
+      --color-highlight-high: #524f67;
+      --color-iris: #c4a7e7;
+    }
+
+    body {
+      font-family: var(--font-display);
+      background-color: var(--color-base);
+      color: var(--color-text);
+    }
+
+    ::selection { background-color: var(--color-highlight-med); }
+
+    input { @apply text-text; }
+
+    button { transition: transform 0.2s ease-in-out; }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+  <div class="flex flex-col flex-grow">
+    <div class="sticky top-0 bg-base/90 backdrop-blur shadow-md py-3 flex justify-center">
+      <div class="relative w-1/2">
+        <i class="ph-bold ph-magnifying-glass absolute left-3 top-3 text-muted"></i>
+        <input
+          id="search_input_gmes"
+          type="text"
+          placeholder="Search gmes..."
+          class="w-full pl-10 pr-4 py-2 rounded-md bg-surface text-text focus:outline-none shadow"
+        />
+      </div>
+    </div>
+
+    <section id="gme_list" class="flex flex-wrap justify-center gap-4 p-4 flex-grow">
+      <p>Loading gmes...</p>
+    </section>
+
+    <div id="gme_frame_container" class="fixed inset-0 z-[999] bg-surface/90 hidden">
+      <h2 id="gme_frame_title" class="absolute top-4 left-5 text-3xl font-bold text-white z-50"></h2>
+      <button
+        id="close_gme_frame"
+        class="absolute top-4 right-5 flex items-center gap-2 px-4 py-2 rounded-lg bg-highlight-med/70 text-white hover:bg-highlight-high/70 z-50 transition"
+      >
+        <i class="ph-bold ph-x text-xl"></i> Close
+      </button>
+      <iframe id="gme_frame" class="absolute inset-0 w-full h-full border-none" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script type="module">
+    const gme_list = document.getElementById("gme_list");
+    const search_input_gmes = document.getElementById("search_input_gmes");
+    const gme_frame_container = document.getElementById("gme_frame_container");
+    const gme_frame = document.getElementById("gme_frame");
+    const gme_frame_title = document.getElementById("gme_frame_title");
+    const close_gme_frame = document.getElementById("close_gme_frame");
+
+    let gmes_data = [];
+
+    const render_gmes = (games) => {
+      gme_list.innerHTML = "";
+      games.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "bg-surface border border-overlay rounded-xl p-3 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer";
+        card.innerHTML = `<h3 class="mt-2 font-medium text-text truncate">${game.title}</h3>`;
+        card.addEventListener("click", () => open_gme(game.file_name, game.title));
+        gme_list.appendChild(card);
+      });
+    };
+
+    const open_gme = (file_name, title) => {
+      gme_frame.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${file_name}`;
+      gme_frame_title.textContent = title;
+      gme_frame_container.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    };
+
+    close_gme_frame.addEventListener("click", () => {
+      gme_frame.src = "";
+      gme_frame_container.classList.add("hidden");
+      document.body.style.overflow = "";
+    });
+
+    search_input_gmes.addEventListener("input", e => {
+      const query = e.target.value.toLowerCase();
+      const filtered = gmes_data.filter(g => g.title.toLowerCase().includes(query));
+      render_gmes(filtered);
+    });
+
+    (async () => {
+      try {
+        const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json");
+        gmes_data = await res.json();
+        render_gmes(gmes_data);
+      } catch (err) {
+        console.error("Could not load gmes JSON:", err);
+        gme_list.innerHTML = "<p class='text-love'>Failed to load games.</p>";
+      }
+    })();
+  </script>
+</body>
+</html>
+
