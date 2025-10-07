@@ -1,180 +1,236 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>bromine's gmes page</title>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google</title>
+  <link rel="icon" href="https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico">
 
-    <!-- Tailwind + Phosphor -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+  <!-- Dependencies -->
+  <script defer async src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+
+  <!-- Styling -->
+  <style type="text/tailwindcss">
+    @theme {
+      --font-display: Helvetica, sans-serif;
+
+      --color-base: #191724;
+      --color-surface: #1f1d2e;
+      --color-overlay: #26233a;
+      --color-muted: #6e6a86;
+      --color-text: #e0def4;
+      --color-love: #eb6f92;
+      --color-highlight-med: #403d52;
+      --color-highlight-high: #524f67;
+      --color-iris: #c4a7e7;
+    }
+
+    body {
+      font-family: var(--font-display);
+      background-color: var(--color-base);
+      color: var(--color-text);
+    }
+
+    ::selection { background-color: var(--color-highlight-med); }
+
+    h1 { @apply text-3xl font-bold; }
+    h2 { @apply text-xl font-semibold; }
+    h3 { @apply text-lg font-medium; }
+    a  { @apply text-iris }
+
+    button { transition: transform 0.2s ease-in-out; }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="flex items-center justify-between px-8 py-3 sticky top-0 bg-base/90 backdrop-blur z-50 outline-mute outline-solid">
+    <span class="font-bold text-lg flex items-center gap-2">Bromine Lite</span>
+    <div class="flex gap-6">
+      <a href="#home" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
+        <i class="ph-bold ph-house"></i> Home
+      </a>
+      <a href="#gmes" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
+        <i class="ph-bold ph-gme-controller"></i> Gmes
+      </a>
+    </div>
+  </nav>
+
+  <!-- Home -->
+  <main id="home" class="page flex flex-col items-center justify-center text-center flex-grow p-8">
+    <h1>Bromine Lite</h1>
+    <p class="text-love mb-4 font-semibold">IMPORTANT: Low site support!</p>
+
+    <input
+      id="search_input_home"
+      type="text"
+      placeholder="Search the web..."
+      class="bg-surface px-4 py-2 rounded-md w-full max-w-md focus:outline-none shadow text-text"
     />
 
-    <style type="text/tailwindcss">
-			@theme {
-			  --font-display: Helvetica, sans-serif;
-			
-			  --color-base: #191724;
-			  --color-surface: #1f1d2e;
-			  --color-overlay: #26233a;
-			  --color-muted: #6e6a86;
-			  --color-subtle: #908caa;
-			  --color-text: #e0def4;
-			  --color-love: #eb6f92;
-			  --color-gold: #f6c177;
-			  --color-rose: #ebbcba;
-			  --color-pine: #31748f;
-			  --color-foam: #9ccfd8;
-				--color-iris: #c4a7e7;
-				--color-highlight-low: #21202e;
-				--color-highlight-med: #403d52;
-				--color-highlight-high: #524f67;
-			}
+		<!-- Dialog -->
+		<dialog open class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 rounded-md bg-overlay text-text">
+			<button 
+				onclick="this.closest('dialog').close()" 
+				class="absolute top-2 right-2 text-xl font-bold text-text hover:text-love"
+			>
+				<i class="ph-bold ph-x"></i>
+			</button>
 
-			::selection {
-				background-color: #403d52;
-			}
 
-			::-moz-selection {
-				background-color: #403d52;
-			}
+			<h1 class="text-xl font-semibold mb-2">Bromine Lite</h1>
+			<p class="mb-4">Join our Discord community for updates and more!</p>
 
-			h1 {
-				@apply text-2xl;
-			}
+			<form class="bg-surface flex justify-center" onsubmit="event.preventDefault(); join_dc();">
+				<button type="submit" class="w-full px-4 py-2 rounded-md bg-primary text-white font-semibold">
+					Join
+				</button>
+			</form>
+		</dialog>
+	</main>
 
-			h2 {
-				@apply text-xl;
-			}
-
-			h3 {
-				@apply text-lg;
-			}
-
-			label {
-				@apply text-xs text-text font-medium;
-			}
-
-			button {
-				transition: transform 0.2s ease-in-out;
-			}
-
-			button:hover {
-				transform: scale(1.1) translateY(-2px);
-			}
-
-			button:active {
-				transform: scale(0.95);
-			}
-
-			[data-icon] {
-			  stroke-width: 3;
-			}
-    </style>
-  </head>
-
-  <body class="flex bg-base text-text">
-    <main class="flex flex-col flex-grow min-h-screen" id="main">
-      <div class="flex w-full backdrop-blur justify-center py-3 shadow-md sticky top-0 z-50">
+  <!-- Gmes -->
+  <div id="gmes" class="page hidden flex flex-col flex-grow">
+    <div class="sticky top-0 bg-base/90 backdrop-blur shadow-md py-3 flex justify-center">
+      <div class="relative w-1/2">
+        <i class="ph-bold ph-magnifying-glass absolute left-3 top-3 text-muted"></i>
         <input
-          class="bg-surface px-4 py-2 rounded-md focus:outline-none shadow text-text w-1/2"
-          id="search"
-          placeholder="Search games..."
+          id="search_input_gmes"
           type="text"
+          placeholder="Search gmes..."
+          class="w-full pl-10 pr-4 py-2 rounded-md bg-surface text-text focus:outline-none shadow"
         />
       </div>
+    </div>
 
-      <section id="gmeContainer" class="flex flex-wrap justify-center gap-3 p-4">
-        <p>Loading games...</p>
-      </section>
-			<div id="gmePageContainer" class="fixed inset-0 z-[999] bg-surface/90 hidden">
-			  <!-- Title -->
-			  <h2 id="gmePageTitle" class="absolute top-[15px] left-[20px] text-3xl font-bold text-white z-50"></h2>
-			
-			  <!-- Close Button -->
-			  <button id="backBtn" class="absolute top-[15px] right-[20px] flex items-center px-4 py-2 rounded-lg bg-highlight-med/70 text-white border-0 cursor-pointer hover:bg-highlight-high/70 z-50 transition">
-			    <svg class="size-5" data-icon="ph:x" height="1em" width="1em" aria-hidden="true">
-			      <symbol id="ai-ph-x" viewBox="0 0 256 256">
-			        <path fill="currentColor" d="M205.66 194.34a8 8 0 0 1-11.32 11.32L128 139.31l-66.34 66.35a8 8 0 0 1-11.32-11.32L116.69 128L50.34 61.66a8 8 0 0 1 11.32-11.32L128 116.69l66.34-66.35a8 8 0 0 1 11.32 11.32L139.31 128Z"/>
-			      </symbol>
-			      <use href="#ai-ph-x"></use>
-			    </svg>
-			    Close
-			  </button>
-			
-			  <!-- Game iframe -->
-			  <iframe id="gmePageFrame" class="absolute top-0 left-0 w-full h-full border-none" allowfullscreen></iframe>
-			</div>
+    <section id="gme_list" class="flex flex-wrap justify-center gap-4 p-4 flex-grow">
+      <p>Loading gmes...</p>
+    </section>
 
-    </main>
+    <div id="gme_frame_container" class="fixed inset-0 z-[999] bg-surface/90 hidden">
+      <h2 id="gme_frame_title" class="absolute top-4 left-5 text-3xl font-bold text-white z-50"></h2>
+      <button
+        id="close_gme_frame"
+        class="absolute top-4 right-5 flex items-center gap-2 px-4 py-2 rounded-lg bg-highlight-med/70 text-white hover:bg-highlight-high/70 z-50 transition"
+      >
+        <i class="ph-bold ph-x text-xl"></i> Close
+      </button>
+      <iframe id="gme_frame" class="absolute inset-0 w-full h-full border-none" allowfullscreen></iframe>
+    </div>
+  </div>
 
-
-
-    <script type="module">
-      async function loadGames() {
-        try {
-          const res = await fetch(
-            "https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json"
-          );
-          const data = await res.json();
-          window.gmesData = data;
-          renderGames(data);
-        } catch (e) {
-          console.error("Failed to load JSON:", e);
-          document.getElementById("gmeContainer").innerHTML =
-            "<p style='color:red;'>Failed to load games.</p>";
-        }
+  <script defer src="https://cdn.jsdelivr.net/gh/bromine-labs/BromineLite@main/sandstone.js"></script>
+  <script type="module">
+    (async () => {
+      try {
+        const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json");
+        gmes_data = await res.json();
+        render_gmes(games_data);
+      } catch (err) {
+        console.error("Could not load gmes JSON:", err);
+        gme_list.innerHTML = "<p class='text-love'>Failed to load games.</p>";
       }
+    })();
 
-      const container = document.getElementById("gmeContainer");
-      const searchInput = document.getElementById("search");
+    window.join_dc = () => {
+      document.querySelector('dialog').close();
+      open('https://discord.com/invite/78eCrKajqU', '_blank');
+    }
 
-      function renderGames(games) {
-        container.innerHTML = games
-          .map(
-            (game) => `
-          <div
-            onclick="openGme('${game.alt}', '${game.title}', '${game.frame}')"
-            class="bg-surface border border-overlay rounded-xl p-3 m-2 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer"
-          >
-            <h3 class="mt-2 font-medium text-text truncate">${game.title}</h3>
-          </div>
-        `
-          )
-          .join("");
-      }
+    // -----------------------------
+    // Proxy
+    // -----------------------------
+    const search_input_home = document.getElementById("search_input_home");
+    const home_page = document.getElementById("home");
+    let main_frame;
+    const original_home_content = home_page.innerHTML;
 
-      searchInput.addEventListener("input", (e) => {
-        const q = e.target.value.toLowerCase();
-        const filtered = window.gmesData.filter((g) =>
-          g.title.toLowerCase().includes(q)
-        );
-        renderGames(filtered);
+    sandstone.libcurl.set_websocket("wss://anura.pro");
+
+    search_input_home.addEventListener("keydown", (e) => {
+      if (e.code !== "Enter") return;
+      const query = search_input_home.value.trim();
+      if (!query) return;
+
+      home_page.innerHTML = "";
+
+      main_frame = new sandstone.controller.ProxyFrame();
+      main_frame.iframe.style.width = "100%";
+      main_frame.iframe.style.height = "100vh";
+      main_frame.iframe.style.border = "none";
+
+      const close_btn = document.createElement("button");
+      close_btn.textContent = "Close";
+      close_btn.className = "fixed top-4 right-4 z-50 px-4 py-2 rounded-lg bg-highlight-med/60 text-white hover:bg-highlight-high/70 cursor-pointer transition";
+      close_btn.addEventListener("click", () => {
+        home_page.innerHTML = original_home_content;
       });
 
-      window.openGme = (alt, title, frame) => {
-        const iframe = document.getElementById("gmePageFrame");
-        const container = document.getElementById("gmePageContainer");
-        iframe.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${alt}`;
-        container.classList.remove("hidden")
-        document.body.style.overflow = "hidden";
-      };
+      home_page.appendChild(main_frame.iframe);
+      home_page.appendChild(close_btn);
 
-      window.closeGme = () => {
-        const container = document.getElementById("gmePageContainer");
-        const iframe = document.getElementById("gmePageFrame");
-        iframe.src = "";
-        container.classList.add("hidden");
-        document.body.style.overflow = "";
-      };
+      const search_url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+      main_frame.navigate_to(search_url);
+    });
 
-      loadGames();
-      		document.getElementById("backBtn").addEventListener("click", () => {
-			closeGme();
-		})
+    // -----------------------------
+    // SPA thingy
+    // -----------------------------
+    const pages = document.querySelectorAll(".page");
 
-    </script>
-  </body>
+    const show_page_from_hash = () => {
+      const hash = location.hash.substring(1) || "home";
+      pages.forEach(page => page.classList.toggle("hidden", page.id !== hash));
+    };
+    show_page_from_hash();
+    addEventListener("hashchange", show_page_from_hash);
+
+    // -----------------------------
+    // Gmes
+    // -----------------------------
+    const gme_list = document.getElementById("game_list");
+    const search_input_gmes = document.getElementById("search_input_games");
+    const gme_frame_container = document.getElementById("game_frame_container");
+    const gme_frame = document.getElementById("game_frame");
+    const gme_frame_title = document.getElementById("game_frame_title");
+    const close_gme_frame = document.getElementById("close_game_frame");
+
+    let gmes_data = [];
+
+    const render_gmes = (games) => {
+      gme_list.innerHTML = "";
+      gmes.forEach(game => {
+        const card = document.createElement("div");
+        card.className = "bg-surface border border-overlay rounded-xl p-3 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer";
+        card.innerHTML = `<h3 class="mt-2 font-medium text-text truncate">${gme.title}</h3>`;
+        card.addEventListener("click", () => open_gme(game.file_name, game.title));
+        gme_list.appendChild(card);
+      });
+    };
+
+    const open_gme = (file_name, title) => {
+      gme_frame.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${file_name}`;
+      gme_frame_title.textContent = title;
+      gme_frame_container.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    };
+
+    close_gme_frame.addEventListener("click", () => {
+      gme_frame.src = "";
+      gme_frame_container.classList.add("hidden");
+      document.body.style.overflow = "";
+    });
+
+    search_input_gmes.addEventListener("input", e => {
+      const query = e.target.value.toLowerCase();
+      const filtered = gmes_data.filter(g => g.title.toLowerCase().includes(query));
+      render_gmes(filtered);
+    });
+  </script>
+</body>
 </html>
+
