@@ -7,8 +7,8 @@ on:
       - 'games.html'
       - 'proxy.html'
       - 'README.template.md'
-  workflow_dispatch:
-
+      - '.github/workflows/ci.yml'
+      
 jobs:
   build-readme:
     runs-on: ubuntu-latest
@@ -35,25 +35,16 @@ jobs:
 
       - name: Build README.md
         run: |
-          # Write template to README.md
           cp README.template.md README.md
-      
-          # Replace placeholder safely
           awk -v data="$DATA_URLS" '{gsub("{{DATA_URLS}}", data)}1' README.md > README.tmp.md
           mv README.tmp.md README.md
 
-  
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
+          git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "Automated"
-          git add -A
-          git diff-index --quiet HEAD || git commit -m "Sync"
-          
-      - name: Pull changes
-        run: git pull -r
-        
-      - name: Push changes
-        uses: ad-m/github-push-action@d91a481090679876dfc4178fef17f286781251df
-        with:
-          github_token: ${{ secrets.GOD }}
+          git add README.md
+          git diff-index --quiet HEAD || git commit -m "Rebuild README with Base64 data URLs"
+          git push origin HEAD:main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
