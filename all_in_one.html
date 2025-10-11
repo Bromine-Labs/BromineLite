@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bromine Lite</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google</title>
   <link rel="icon" href="https://www.gstatic.com/images/branding/searchlogo/ico/favicon.ico">
 
-  <!-- Dependencies -->
+  <!-- Tailwind + Icons -->
   <script defer async src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
 
-  <!-- Styling -->
   <style type="text/tailwindcss">
     @theme {
       --font-display: Helvetica, sans-serif;
@@ -31,202 +30,206 @@
       color: var(--color-text);
     }
 
-    ::selection { background-color: var(--color-highlight-med); }
-
     h1 { @apply text-3xl font-bold; }
     h2 { @apply text-xl font-semibold; }
     h3 { @apply text-lg font-medium; }
-    a  { @apply text-iris }
 
-    input { @apply text-text; }
-    button { transition: transform 0.2s ease-in-out; }
+    a { @apply text-iris }
   </style>
 </head>
 
 <body class="flex flex-col min-h-screen">
 
   <!-- Navbar -->
-  <nav class="flex items-center justify-between px-8 py-3 sticky top-0 bg-base/90 backdrop-blur z-50 outline-mute outline-solid">
+  <nav class="flex items-center justify-between px-8 py-3 sticky top-0 bg-base/90 backdrop-blur z-50">
     <span class="font-bold text-lg flex items-center gap-2">Bromine Lite</span>
     <div class="flex gap-6">
-      <a href="#home" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
+      <button data-page="home" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
         <i class="ph-bold ph-house"></i> Home
-      </a>
-      <a href="#gmes" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
+      </button>
+      <button data-page="gmes" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
         <i class="ph-bold ph-game-controller"></i> Gmes
-      </a>
+      </button>
     </div>
   </nav>
 
-  <!-- Proxy -->
-  <main id="home" class="page flex flex-col items-center justify-center text-center flex-grow p-8">
-    <h1>Bromine Lite</h1>
-    <p class="text-love mb-4 font-semibold">IMPORTANT: Low site support!</p>
+  <!-- Main container -->
+  <main id="app" class="flex flex-col flex-grow"></main>
 
-    <input
-      id="search_input_home"
-      type="text"
-      placeholder="Search the web..."
-      class="bg-surface px-4 py-2 rounded-md w-full max-w-md focus:outline-none shadow"
-    />
+  <!-- Templates for each page -->
+  <template id="home">
+    <section class="flex flex-col items-center justify-center text-center flex-grow p-8">
+      <h1>Bromine Lite</h1>
+      <p class="text-love mb-4 font-semibold">IMPORTANT: Low site support!</p>
 
-    <!-- Dialog -->
-    <dialog open class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 rounded-md bg-overlay text-text">
-      <button 
-        onclick="this.closest('dialog').close()" 
-        class="absolute top-2 right-2 text-xl font-bold text-text hover:text-love"
-      >
-        <i class="ph-bold ph-x"></i>
-      </button>
+      <input
+        id="proxy_input"
+        type="text"
+        placeholder="Search the web..."
+        class="bg-surface px-4 py-2 rounded-md w-full max-w-md focus:outline-none shadow"
+      />
 
-      <h1 class="text-xl font-semibold mb-2">Bromine Lite</h1>
-      <p class="mb-4">Join our Discord community for updates and more!</p>
-
-      <form class="bg-surface flex justify-center" onsubmit="event.preventDefault(); join_dc();">
-        <button type="submit" class="w-full px-4 py-2 rounded-md bg-primary text-white font-semibold">
-          Join
+      <dialog open class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-6 rounded-md bg-overlay text-text">
+        <button 
+          onclick="this.closest('dialog').close()" 
+          class="absolute top-2 right-2 text-xl font-bold text-text hover:text-love"
+        >
+          <i class="ph-bold ph-x"></i>
         </button>
-      </form>
-    </dialog>
-  </main>
 
-  <!-- Gmes -->
-  <div id="gmes" class="page hidden flex flex-col flex-grow">
-    <div class="sticky top-0 bg-base/90 backdrop-blur shadow-md py-3 flex justify-center">
-      <div class="relative w-1/2">
-        <i class="ph-bold ph-magnifying-glass absolute left-3 top-3 text-muted"></i>
-        <input
-          id="search_input_gmes"
-          type="text"
-          placeholder="Search gmes..."
-          class="w-full pl-10 pr-4 py-2 rounded-md bg-surface text-text focus:outline-none shadow"
-        />
-      </div>
-    </div>
+        <h1 class="text-xl font-semibold mb-2">Bromine Lite</h1>
+        <p class="mb-4">Join our Discord community for updates and more!</p>
 
-    <section id="gme_list" class="flex flex-wrap justify-center gap-4 p-4 flex-grow">
-      <p>Loading gmes...</p>
+        <form class="bg-surface flex justify-center" onsubmit="event.preventDefault(); join_dc();">
+          <button type="submit" class="w-full px-4 py-2 rounded-md bg-primary text-white font-semibold">
+            Join
+          </button>
+        </form>
+      </dialog>
     </section>
+  </template>
 
-    <div id="gme_frame_container" class="fixed inset-0 z-[999] bg-surface/90 hidden">
-      <h2 id="gme_frame_title" class="absolute top-4 left-5 text-3xl font-bold text-white z-50"></h2>
-      <button
-        id="close_gme_frame"
-        class="absolute top-4 right-5 flex items-center gap-2 px-4 py-2 rounded-lg bg-highlight-med/70 text-white hover:bg-highlight-high/70 z-50 transition"
-      >
-        <i class="ph-bold ph-x text-xl"></i> Close
-      </button>
-      <iframe id="gme_frame" class="absolute inset-0 w-full h-full border-none" allowfullscreen></iframe>
-    </div>
-  </div>
+  <template id="gmes">
+    <section class="flex flex-col flex-grow">
+      <div class="sticky top-0 bg-base/90 backdrop-blur shadow-md py-3 flex justify-center">
+        <div class="relative w-1/2">
+          <i class="ph-bold ph-magnifying-glass absolute left-3 top-3 text-muted"></i>
+          <input
+            id="gmes_search"
+            type="text"
+            placeholder="Search gmes..."
+            class="w-full pl-10 pr-4 py-2 rounded-md bg-surface text-text focus:outline-none shadow"
+          />
+        </div>
+      </div>
+
+      <section id="gme_list" class="flex flex-wrap justify-center gap-4 p-4 flex-grow">
+        <p>Loading gmes...</p>
+      </section>
+
+      <div id="gme_container" class="fixed inset-0 z-[999] bg-surface/90 hidden">
+        <h2 id="gme_title" class="absolute top-4 left-5 text-3xl font-bold text-white z-50"></h2>
+        <button
+          id="close_gme"
+          class="absolute top-4 right-5 flex items-center gap-2 px-4 py-2 rounded-lg bg-highlight-med/70 text-white hover:bg-highlight-high/70 z-50 transition"
+        >
+          <i class="ph-bold ph-x text-xl"></i> Close
+        </button>
+        <iframe id="gme_frame" class="absolute inset-0 w-full h-full border-none" allowfullscreen></iframe>
+      </div>
+    </section>
+  </template>
 
   <!-- Scripts -->
   <script defer src="https://cdn.jsdelivr.net/gh/bromine-labs/BromineLite@main/sandstone.js"></script>
   <script type="module">
+		// bruh i should have used this vk6 hack
+    const from_id = (id) => document.getElementById(id);
+		const create_element = (type) => document.createElement(type);
+
+
     window.join_dc = () => {
       document.querySelector('dialog').close();
+			localStorage.setItem("a", "a")
       open('https://discord.com/invite/78eCrKajqU', '_blank');
+    };
+
+    // maybe i shoudl make this a poc for a non hash based one file router
+    const app = from_id("app");
+
+    function load_page(name = "home") {
+      const template = from_id(name);
+      if (!template) return;
+      app.innerHTML = "";
+      app.appendChild(template.content.cloneNode(true));
+
+      if (name === "home") init_home();
+      if (name === "gmes") init_gmes();
     }
 
-    // -----------------------------
-    // Proxy search
-    // -----------------------------
-    const search_input_home = document.getElementById("search_input_home");
-    const home_page = document.getElementById("home");
-    const original_home_content = home_page.innerHTML;
+    load_page();
 
-    sandstone.libcurl.set_websocket("wss://anura.pro");
+    document.querySelectorAll("[data-page]").forEach(btn => {
+      btn.addEventListener("click", () => load_page(btn.dataset.page));
+    });
 
-    search_input_home.addEventListener("keydown", (e) => {
-      if (e.code !== "Enter") return;
-      const query = search_input_home.value.trim();
-      if (!query) return;
+    function init_home() {
+		  if(localStorage.getItem("a") == "a")
+		      document.querySelector('dialog').close();
 
-      home_page.innerHTML = "";
 
-      const main_frame = new sandstone.controller.ProxyFrame();
-      main_frame.iframe.style.width = "100%";
-      main_frame.iframe.style.height = "100vh";
-      main_frame.iframe.style.border = "none";
+      const input = from_id("proxy_input");
+      if (!input) return;
 
-      const close_btn = document.createElement("button");
-      close_btn.textContent = "Close";
-      close_btn.className = "fixed top-4 right-4 z-50 px-4 py-2 rounded-lg bg-highlight-med/60 text-white hover:bg-highlight-high/70 cursor-pointer transition";
-      close_btn.addEventListener("click", () => {
-        home_page.innerHTML = original_home_content;
+      sandstone.libcurl.set_websocket("wss://anura.pro");
+
+      input.addEventListener("keydown", (e) => {
+        if (e.code !== "Enter") return;
+        const query = input.value.trim();
+        if (!query) return;
+
+        const search_url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
+
+        const iframe = create_element("iframe");
+        iframe.src = search_url;
+        iframe.className = "w-full h-screen border-none";
+
+        const close_btn = create_element("button");
+        close_btn.textContent = "Close";
+        close_btn.className = "fixed top-4 right-4 px-4 py-2 rounded-lg bg-highlight-med/70 text-white";
+        close_btn.onclick = () => loadPage("home");
+
+        app.innerHTML = "";
+        app.appendChild(iframe);
+        app.appendChild(close_btn);
       });
+    }
 
-      home_page.appendChild(main_frame.iframe);
-      home_page.appendChild(close_btn);
+    async function init_gmes() {
+      const gme_list = from_id("gme_list");
+      const gme_container = from_id("gme_container");
+      const gme_frame = from_id("gme_frame");
+      const gme_title = from_id("gme_title");
+      const close_gme = from_id("close_gme");
+      const gmes_search = from_id("gmes_search");
 
-      const search_url = `https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`;
-      main_frame.navigate_to(search_url);
-    });
+      let gmes_data = [];
+      const render = (gmes) => {
+        gme_list.innerHTML = "";
+        gmes.forEach(g => {
+          const card = create_element("div");
+          card.className = "bg-surface border border-overlay rounded-xl p-3 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer";
+          card.innerHTML = `<h3 class='mt-2 font-medium text-text truncate'>${g.title}</h3>`;
+          card.onclick = () => {
+ 		        gme_frame.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${g.file_name}`;
+ 		        gme_title.textContent = g.title;
+ 		        gme_container.classList.remove("hidden");
+ 		        document.body.style.overflow = "hidden";
+ 		      };
+          gme_list.appendChild(card);
+        });
+      };
 
-    // -----------------------------
-    // SPA routing for games
-    // -----------------------------
-    const pages = document.querySelectorAll(".page");
-    const show_page_from_hash = () => {
-      const hash = location.hash.substring(1) || "home";
-      pages.forEach(page => page.classList.toggle("hidden", page.id !== hash));
-    };
-    show_page_from_hash();
-    addEventListener("hashchange", show_page_from_hash);
+      close_gme.onclick = () => {
+        gme_frame.src = "";
+        gme_container.classList.add("hidden");
+        document.body.style.overflow = "";
+      };
 
-    // -----------------------------
-    // Games logic
-    // -----------------------------
-    const gme_list = document.getElementById("gme_list");
-    const search_input_gmes = document.getElementById("search_input_gmes");
-    const gme_frame_container = document.getElementById("gme_frame_container");
-    const gme_frame = document.getElementById("gme_frame");
-    const gme_frame_title = document.getElementById("gme_frame_title");
-    const close_gme_frame = document.getElementById("close_gme_frame");
+      gmes_search.oninput = e => {
+        const query = e.target.value.toLowerCase();
+        render(gmes_data.filter(g => g.title.toLowerCase().includes(query)));
+      };
 
-    let gmes_data = [];
-
-    const render_gmes = (games) => {
-      gme_list.innerHTML = "";
-      games.forEach(game => {
-        const card = document.createElement("div");
-        card.className = "bg-surface border border-overlay rounded-xl p-3 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer";
-        card.innerHTML = `<h3 class="mt-2 font-medium text-text truncate">${game.title}</h3>`;
-        card.addEventListener("click", () => open_gme(game.file_name, game.title));
-        gme_list.appendChild(card);
-      });
-    };
-
-    const open_gme = (file_name, title) => {
-      gme_frame.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${file_name}`;
-      gme_frame_title.textContent = title;
-      gme_frame_container.classList.remove("hidden");
-      document.body.style.overflow = "hidden";
-    };
-
-    close_gme_frame.addEventListener("click", () => {
-      gme_frame.src = "";
-      gme_frame_container.classList.add("hidden");
-      document.body.style.overflow = "";
-    });
-
-    search_input_gmes.addEventListener("input", e => {
-      const query = e.target.value.toLowerCase();
-      const filtered = gmes_data.filter(g => g.title.toLowerCase().includes(query));
-      render_gmes(filtered);
-    });
-
-    (async () => {
       try {
         const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json");
         gmes_data = await res.json();
-        render_gmes(gmes_data);
-      } catch (err) {
-        console.error("Could not load gmes JSON:", err);
-        gme_list.innerHTML = "<p class='text-love'>Failed to load games.</p>";
+				localStorage.setItem("b", JSON.stringify(gmes_data))
+        render(gmes_data);
+      } catch {
+        gme_list.innerHTML = "<p class='text-love'>Failed to load gmes.</p>";
       }
-    })();
+    }
   </script>
 </body>
 </html>
-
