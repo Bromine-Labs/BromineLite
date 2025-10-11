@@ -24,25 +24,44 @@
       --color-iris: #c4a7e7;
     }
 
+<style type="text/tailwindcss">
+    @theme {
+      --font-display: Helvetica, sans-serif;
+      --color-base: #191724;
+      --color-surface: #1f1d2e;
+      --color-overlay: #26233a;
+      --color-muted: #6e6a86;
+      --color-text: #e0def4;
+      --color-love: #eb6f92;
+      --color-highlight-med: #403d52;
+      --color-highlight-high: #524f67;
+      --color-iris: #c4a7e7;
+    }
+
     body {
       font-family: var(--font-display);
       background-color: var(--color-base);
       color: var(--color-text);
     }
 
+    ::selection { background-color: var(--color-highlight-med); }
+
     h1 { @apply text-3xl font-bold; }
     h2 { @apply text-xl font-semibold; }
     h3 { @apply text-lg font-medium; }
+    a  { @apply text-iris }
 
-    a { @apply text-iris }
+    input { @apply text-text; }
+    button { transition: transform 0.2s ease-in-out; }
+  </style>
   </style>
 </head>
 
 <body class="flex flex-col min-h-screen">
 
   <!-- Navbar -->
-  <nav class="flex items-center justify-between px-8 py-3 sticky top-0 bg-base/90 backdrop-blur z-50">
-    <span class="font-bold text-lg flex items-center gap-2">Bromine Lite</span>
+  <nav class="flex items-center text-iris justify-between px-8 py-3 sticky top-0 bg-base/90 backdrop-blur z-50 outline-muted outline-solid">
+    <span class="font-bold text-lg flex items-center gap-2 text-text">Bromine Lite</span>
     <div class="flex gap-6">
       <button data-page="home" class="flex items-center gap-2 px-4 py-1 rounded-lg hover:bg-highlight-med">
         <i class="ph-bold ph-house"></i> Home
