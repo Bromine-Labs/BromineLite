@@ -149,7 +149,6 @@
 
     window.join_dc = () => {
       document.querySelector('dialog').close();
-			localStorage.setItem("a", "a")
       open('https://discord.com/invite/78eCrKajqU', '_blank');
     };
 
@@ -173,9 +172,6 @@
     });
 
     function init_home() {
-		  if(localStorage.getItem("a") == "a")
-		      document.querySelector('dialog').close();
-
 
       const input = from_id("proxy_input");
       if (!input) return;
@@ -243,7 +239,6 @@
       try {
         const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json");
         gmes_data = await res.json();
-				localStorage.setItem("b", JSON.stringify(gmes_data))
         render(gmes_data);
       } catch {
         gme_list.innerHTML = "<p class='text-love'>Failed to load gmes.</p>";
