@@ -17,7 +17,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Generate Data URLs content
+      - name: Generate Data URIs
         id: generate
         run: |
           set -e
@@ -33,11 +33,17 @@ jobs:
           echo -e "$DATA_URLS" >> $GITHUB_ENV
           echo -e "EOF" >> $GITHUB_ENV
 
-      - name: Build README.md from template
+      - name: Build README.md
         run: |
-          sed "s|{{DATA_URLS}}|$DATA_URLS|g" README.template.md > README.md
+          # Write template to README.md
+          cp README.template.md README.md
+      
+          # Replace placeholder safely
+          awk -v data="$DATA_URLS" '{gsub("{{DATA_URLS}}", data)}1' README.md > README.tmp.md
+          mv README.tmp.md README.md
 
-      - name: Commit and push README.md
+
+      - name: Sync
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
