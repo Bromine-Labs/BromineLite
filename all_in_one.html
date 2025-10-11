@@ -24,36 +24,35 @@
       --color-iris: #c4a7e7;
     }
 
-<style type="text/tailwindcss">
-    @theme {
-      --font-display: Helvetica, sans-serif;
-      --color-base: #191724;
-      --color-surface: #1f1d2e;
-      --color-overlay: #26233a;
-      --color-muted: #6e6a86;
-      --color-text: #e0def4;
-      --color-love: #eb6f92;
-      --color-highlight-med: #403d52;
-      --color-highlight-high: #524f67;
-      --color-iris: #c4a7e7;
-    }
-
     body {
       font-family: var(--font-display);
       background-color: var(--color-base);
       color: var(--color-text);
     }
 
-    ::selection { background-color: var(--color-highlight-med); }
+    ::selection {
+      background-color: var(--color-highlight-med);
+    }
 
-    h1 { @apply text-3xl font-bold; }
-    h2 { @apply text-xl font-semibold; }
-    h3 { @apply text-lg font-medium; }
-    a  { @apply text-iris }
+    h1 {
+      @apply text-3xl font-bold;
+    }
+    h2 {
+      @apply text-xl font-semibold;
+    }
+    h3 {
+      @apply text-lg font-medium;
+    }
+    a {
+      @apply text-iris;
+    }
 
-    input { @apply text-text; }
-    button { transition: transform 0.2s ease-in-out; }
-  </style>
+    input {
+      @apply text-text;
+    }
+    button {
+      transition: transform 0.2s ease-in-out;
+    }
   </style>
 </head>
 
@@ -142,17 +141,14 @@
   <!-- Scripts -->
   <script defer src="https://cdn.jsdelivr.net/gh/bromine-labs/BromineLite@main/sandstone.js"></script>
   <script type="module">
-		// bruh i should have used this vk6 hack
     const from_id = (id) => document.getElementById(id);
-		const create_element = (type) => document.createElement(type);
-
+    const create_element = (type) => document.createElement(type);
 
     window.join_dc = () => {
       document.querySelector('dialog').close();
       open('https://discord.com/invite/78eCrKajqU', '_blank');
     };
 
-    // maybe i shoudl make this a poc for a non hash based one file router
     const app = from_id("app");
 
     function load_page(name = "home") {
@@ -172,7 +168,6 @@
     });
 
     function init_home() {
-
       const input = from_id("proxy_input");
       if (!input) return;
 
@@ -216,11 +211,24 @@
           card.className = "bg-surface border border-overlay rounded-xl p-3 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer";
           card.innerHTML = `<h3 class='mt-2 font-medium text-text truncate'>${g.title}</h3>`;
           card.onclick = () => {
- 		        gme_frame.src = `https://raw.githack.com/Bromine-Labs/asseting-bromine/main/${g.file_name}`;
- 		        gme_title.textContent = g.title;
- 		        gme_container.classList.remove("hidden");
- 		        document.body.style.overflow = "hidden";
- 		      };
+            fetch(`https://cdn.jsdelivr.net/gh/coding4hours/asseting-bromine@main/${g.file_name}?t=${Date.now()}`)
+              .then(response => response.text())
+              .then(html => {
+                const newWin = window.open("about:blank", "_blank");
+                if (newWin) {
+                  newWin.document.open();
+                  newWin.document.write(html);
+                  newWin.document.close();
+                } else {
+                  alert("Popup blocked! Please allow popups to open the game.");
+                }
+              })
+              .catch(err => {
+                console.error("Failed to load game:", err);
+                alert("Failed to load game.");
+              });
+          };
+
           gme_list.appendChild(card);
         });
       };
