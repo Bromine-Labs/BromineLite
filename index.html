@@ -49,7 +49,7 @@
           const res = await fetch('https://api.github.com/repos/Bromine-Labs/BromineLite/contents/?ref=main');
 
           const files = await res.json();
-          const htmls = files.filter(file => file.name.endsWith('.html'));
+          const htmls = files.filter(file => file.name.endsWith('.html') && file.name !== 'index.html');
 
           if (htmls.length === 0) {
             btnContainer.innerHTML = '<p class="col-span-full text-center text-gray-400">No demos found.</p>';
