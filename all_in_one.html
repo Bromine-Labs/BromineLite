@@ -222,7 +222,7 @@
           card.className = "bg-surface border border-overlay rounded-xl p-3 w-64 text-center shadow-sm hover:scale-105 transition-transform cursor-pointer";
           card.innerHTML = `<h3 class='mt-2 font-medium text-text truncate'>${g.title}</h3>`;
           card.onclick = () => {
-            fetch(`https://cdn.jsdelivr.net/gh/coding4hours/asseting-bromine@main/${g.file_name}?t=${Date.now()}`)
+            fetch(`https://cdn.jsdelivr.net/gh/bromine-labs/asseting-bromine@main/${g.file_name}?t=${Date.now()}`)
               .then(response => response.text())
               .then(html => {
                 const newWin = window.open("about:blank", "_blank");
