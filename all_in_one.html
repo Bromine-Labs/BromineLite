@@ -256,7 +256,7 @@
       };
 
       try {
-        const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/assets/gmes.json");
+        const res = await fetch("https://cdn.jsdelivr.net/gh/bromine-labs/bromine@main/src/data/gmes.json");
         gmes_data = await res.json();
         render(gmes_data);
       } catch {
