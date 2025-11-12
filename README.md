@@ -16,3 +16,8 @@
 ## Data Urls
 
 visit [https://bromine-labs.github.io/BromineLite/](https://bromine-labs.github.io/BromineLite/) to get a data URL
+
+## links
+- https://script.google.com/macros/s/AKfycbzr-BS9j9I6MxTiZEekjL7lWbHJg3eYEV2vDpYNSeqWaDtL7oa9FHzxX60Dh6aMqtiv/exec
+- https://script.google.com/macros/s/AKfycbxEzq4Axihx4UoucXXzJq_4ValBFfngrRa7WUvWtBXRFEfASNbrmaEguVwHkc470I4e/exec
+- https://codeprojects.org/projects/weblab/vm34VbcbEEmT5SAi_UWswHp7q2SBriUipjk4WmuXXJk
