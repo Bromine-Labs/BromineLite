@@ -23,3 +23,4 @@ visit [https://bromine-labs.github.io/BromineLite/](https://bromine-labs.github.
 - https://codeprojects.org/projects/weblab/vm34VbcbEEmT5SAi_UWswHp7q2SBriUipjk4WmuXXJk
 - https://sites.google.com/view/brominelite/f
 - https://script.google.com/macros/s/AKfycbxbh5HkxMXL09hmXFM4ZHU7FRufEyrq2_dYTiLQC_h1vbmDyosbdP-5w8tnDHyKbRL5oQ/exec
+- https://docs.google.com/document/d/1i9SBOfflJuz-IdR7FYGCRO7-mj2-svr-D9kRBE6DjaQ/edit?tab=t.0#heading=h.imr47pqf4y97
