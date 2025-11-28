@@ -1,13 +1,9 @@
-
-
-  document.addEventListener("keydown", function(event) {
     // change this to all_in_one, games, or proxy
-    const file = "games"
+    const option = "games"
     
-      if (event.key === "r") {
 
       try {
-        fetch(`https://cdn.jsdelivr.net/gh/Bromine-labs/BromineLite@main/${file}.html?t=`+Date.now())
+        fetch(`https://cdn.jsdelivr.net/gh/Bromine-labs/BromineLite@main/${option}.html?t=`+Date.now())
           .then(response => response.text())
           .then(html => {
                 document.documentElement.innerHTML = html;
@@ -25,5 +21,3 @@
       } catch (error) {
         console.error('error:', error);
       }
-      }
-  });
